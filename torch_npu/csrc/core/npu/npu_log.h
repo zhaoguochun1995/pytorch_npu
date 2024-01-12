@@ -14,13 +14,20 @@
 #define FAILED "FAILED"
 
 #define ASCEND_LOGE(fmt, ...) \
-  aclAppLog(ACL_ERROR, __FILENAME__, __FUNCTION__, __LINE__, "[PTA]:"#fmt, ##__VA_ARGS__)
+  aclAppLog(ACL_ERROR, __FILENAME__, __FUNCTION__, __LINE__, "[PTA]:"#fmt, ##__VA_ARGS__); \
+  printf("%s:%s:%d \n[PTA]:"#fmt, __FILENAME__, __FUNCTION__, __LINE__, ##__VA_ARGS__);
+
 #define ASCEND_LOGW(fmt, ...) \
-  aclAppLog(ACL_WARNING, __FILENAME__, __FUNCTION__, __LINE__, "[PTA]:"#fmt, ##__VA_ARGS__)
+  aclAppLog(ACL_WARNING, __FILENAME__, __FUNCTION__, __LINE__, "[PTA]:"#fmt, ##__VA_ARGS__); \
+  printf("%s:%s:%d [PTA]:"#fmt, __FILENAME__, __FUNCTION__, __LINE__, ##__VA_ARGS__);
+
 #define ASCEND_LOGI(fmt, ...) \
-  aclAppLog(ACL_INFO, __FILENAME__, __FUNCTION__, __LINE__, "[PTA]:"#fmt, ##__VA_ARGS__)
+  aclAppLog(ACL_INFO, __FILENAME__, __FUNCTION__, __LINE__, "[PTA]:"#fmt, ##__VA_ARGS__); \
+  printf("%s:%s:%d [PTA]:"#fmt, __FILENAME__, __FUNCTION__, __LINE__, ##__VA_ARGS__);
+
 #define ASCEND_LOGD(fmt, ...) \
-  aclAppLog(ACL_DEBUG, __FILENAME__, __FUNCTION__, __LINE__, "[PTA]:"#fmt, ##__VA_ARGS__)
+  aclAppLog(ACL_DEBUG, __FILENAME__, __FUNCTION__, __LINE__, "[PTA]:"#fmt, ##__VA_ARGS__);\
+  printf("%s:%s:%d [PTA]:"#fmt, __FILENAME__, __FUNCTION__, __LINE__, ##__VA_ARGS__);
 
 #define NPU_LOGE(fmt, ...)          \
   printf(                           \
@@ -40,6 +47,8 @@
   printf(                          \
       "[INFO]:" #fmt "\n",         \
       ##__VA_ARGS__)
+
+#define USE_NPU_LOG
 
 #ifdef USE_NPU_LOG
 #define NPU_LOGD(fmt, ...)         \

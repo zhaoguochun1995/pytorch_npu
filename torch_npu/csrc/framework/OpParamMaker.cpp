@@ -270,6 +270,29 @@ namespace at_npu
                     (AclFormatToString(descformat)).c_str(),
                     descShape.c_str());
       }
+
+      for (int i = 0; i < cur_paras->paras.output_num; i++) {
+        const aclTensorDesc *tensorDesc = cur_paras->paras.output_desc[i];
+        aclDataType dataType = aclGetTensorDescType(tensorDesc);
+        aclFormat descformat = aclGetTensorDescFormat(tensorDesc);
+
+        int descNumDims = static_cast<int>(aclGetTensorDescNumDims(tensorDesc));
+        std::string descShape = "[";
+        for (int j = 0; j < descNumDims; j++) {
+          int64_t dimSize = 0;
+          aclGetTensorDescDimV2(tensorDesc, j, &dimSize);
+          descShape = descShape + std::to_string(dimSize);
+          if (j < descNumDims - 1) {
+            descShape += ", ";
+          }
+        }
+        descShape += "]";
+
+        ASCEND_LOGE("OutputDesc[%d]: DescType = %s, DescFormat = %s, DescShape = %s", i,
+                    (AclDateTypeToString(dataType)).c_str(),
+                    (AclFormatToString(descformat)).c_str(),
+                    descShape.c_str());
+      }
     }
 
     int ExecFunc(c10_npu::queue::QueueParas* in, aclrtStream stream)
@@ -338,6 +361,8 @@ namespace at_npu
       {
         AclSetCompileopt(aclCompileOpt::ACL_OP_JIT_COMPILE, "disable");
       }
+
+      printErrorLog(cur_paras);
 
       if (ret != ACL_ERROR_NONE)
       {
